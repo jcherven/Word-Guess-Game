@@ -16,17 +16,16 @@ var randomWordPicker = Math.floor(Math.random() * dictionary.length);
 // Turn the chosen word into an array of lowercase letters
 var activeWord = dictionary[randomWordPicker].toLowerCase().split('');
 console.log('ACTIVE WORD IS: ' + activeWord)
-var blankLetters = [];
 var correctGuesses = [];
 var incorrectGuesses = [];
 
 // Display empty letters in #current-word-area from the length of the chosen word
 var emptyLetters = function() {
   for (i = 0; i < activeWord.length; i++) {
-    blankLetters.push('_');
-    document.getElementById('current-word-area').innerHTML = blankLetters.join(' ');
+    correctGuesses.push('_');
+    document.getElementById('current-word-area').innerHTML = correctGuesses.join(' ');
   };
-  return blankLetters;
+  return correctGuesses;
 }; 
 
 console.log(activeWord);
@@ -45,6 +44,7 @@ document.addEventListener('keypress', function(event) {
       // As long as letter is not already in the incorrectGuesses, push it in
       if (incorrectGuesses.indexOf(letter) === -1) {
         incorrectGuesses.push(letter);
+        // Keep the display of incorrect guesses sorted for good UX
         incorrectGuesses.sort();
         document.getElementById("incorrect-guesses").innerHTML = incorrectGuesses.join(' ');
       }
@@ -55,12 +55,16 @@ document.addEventListener('keypress', function(event) {
     }
     // If guess is correct, insert in correctGuesses array
     else if (activeWord.indexOf(letter) > -1) {
-      correctGuesses.splice(activeWord.indexOf(letter), 0, letter);
+      // TODO: Step through the activeWord, checking each letter for position
+      // ...
+      // Currently this just splices the first instance of a correct letter into correctGuesses at the word's letter position
+      correctGuesses.splice(activeWord.indexOf(letter), 1, letter);
       document.getElementById("current-word-area").innerHTML = correctGuesses.join(' ');
       console.log('correct: ' + correctGuesses);
       // This currently doesn't handle repeated letters in activeWord properly!
     }
   }
+  // Provide some feedback for invalid player guesses
   else {
     console.log(letter + " is going in the trash as it's not a letter")
   }
