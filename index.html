@@ -1,13 +1,45 @@
+<!--Design notes
+  Make the jumbotron a drive thru attendant speaking and giving feedback:
+  Welcome to Wordburger. Can I take your order?
+  Our drive through speaker is awful. You'll have to spell your order out. Like with letters. So I can get it correct.
+  They don't pay us enough for this level of detail, but I just need to get through my day.
+
+  If 'knife' is chosen, the attendant says "whoa buddy what kind of shop do you think this is? order seriously this time."
+
+
+-->
+  
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Word-Guess-Game (jcherven)</title>
-  <link rel="stylesheet" type="text/css" media="screen" href="assets/style.css" />
-</head>
-<body>
+  <!-- pull in bootstrap --> 
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
-  <script src="javascript/game.js"></script>
+  <!-- Reset css   <link rel="stylesheet" type="text/css" media="screen" href="assets/css/reset.css">
+-->
+
+  <!-- style.css -->
+  <link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css" />
+</head>
+
+<body>
+  <div class="container">
+    <div class="jumbotron">
+      <h1>wordburger</h1>
+    </div>
+
+    <div class="row justify-content-center">
+        <h1 id="current-word-area"></h1>
+    </div> <!-- End current-word-area row -->
+    <hr>
+
+    <div class="row justify-content-center" id="incorrect-guesses">
+        Incorrect Guesses
+    </div> <!-- End incorrect-guesses row -->
+
+  </div> <!-- End container -->
+  <script src="assets/javascript/game.js"></script>
 </body>
 </html>
