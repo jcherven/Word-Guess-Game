@@ -42,7 +42,7 @@ document.addEventListener('keypress', function(event) {
   if (letterBank.indexOf(letter) > -1) {
     // If guess is incorrect, insert in incorrectGuesses array
     if (activeWord.indexOf(letter) === -1) {
-      // If letter is not already in the incorrectGuesses, push it in
+      // As long as letter is not already in the incorrectGuesses, push it in
       if (incorrectGuesses.indexOf(letter) === -1) {
         incorrectGuesses.push(letter);
         incorrectGuesses.sort();
@@ -56,14 +56,15 @@ document.addEventListener('keypress', function(event) {
     // If guess is correct, insert in correctGuesses array
     else if (activeWord.indexOf(letter) > -1) {
       correctGuesses.splice(activeWord.indexOf(letter), 0, letter);
+      document.getElementById("current-word-area").innerHTML = correctGuesses.join(' ');
       console.log('correct: ' + correctGuesses);
       // This currently doesn't handle repeated letters in activeWord properly!
     }
-  }  
-  // If guess is incorrect, insert in incorrect letters array 
-    // Only log the incorrect guess if it doesn't already exist in incorrectGuesses
-      
-
-}); // End main
+  }
+  else {
+    console.log(letter + " is going in the trash as it's not a letter")
+  }
+  
+  }); // End main
 
 
