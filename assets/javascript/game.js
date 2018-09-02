@@ -48,6 +48,7 @@ document.addEventListener('keypress', function(event) {
         incorrectGuesses.sort();
         document.getElementById("incorrect-guesses").innerHTML = incorrectGuesses.join(' ');
       }
+      // Else if the letter has already been guessed
       else {
         console.log(letter + " has already been guessed");
       }
