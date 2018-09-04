@@ -15,48 +15,27 @@ var incorrectGuesses = [];
 // Main Game Logic
 initActiveWord(activeWord, activeWordDisplay);
 // Capture user input
-captureNextKeyPress();
-/*
 document.onkeyup = function(event) {
     // Set a playerInput variable to lower case letter
-    var playerInput = String.fromCharCode(event.keyCode).toLowerCase();
+    var playerInput = event.key.toLowerCase();
     // Validate the global `playerGuess` against the letterBank array
     playerGuess = validateInput(playerInput, letterBank);
     if ( playerGuess === 1 )
         insertIncorrectGuess();
     else
         insertCorrectGuess(playerGuess);
-
 }; // End input capture
-*/
+// End main game logic
 
 /****************************************************
  *              Funtion Definitions
  ***************************************************/
 
 function insertIncorrectGuess() {
-    console.log(playerGuess);
+    console.log("Incorrect Guess: " + playerGuess);
 }
 function insertCorrectGuess() {
-    console.log(playerGuess);
-}
-
-/**`captureNextKeyPress()`
- * Waits and processes player guesses from the keyboard.
- * Returns:
- *      a letter     
- * Accepts:
- *      nothing
- */
-function captureNextKeyPress() {
-    // Capture user input
-    document.onkeyup = function(event) {
-        // Set a playerInput variable to lower case letter
-        var playerInput = String.fromCharCode(event.keyCode).toLowerCase();
-        // Validate the global `playerGuess` against the letterBank array
-        playerGuess = validateInput(playerInput, letterBank);
-        console.log(playerGuess);
-    }; // End input capture
+    console.log('Correct Guess: ' + playerGuess);
 }
 
 /* `initActiveWord()` 
