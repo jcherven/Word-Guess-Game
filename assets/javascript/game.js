@@ -1,74 +1,112 @@
-// GLOBALS
-// Create the dicitonary
+// Global Variables
 const dictionary = [
-  'hamburger', 'cheeseburger', 'fries', 'taco', 'nuggets',
-  'doughnut', 'coffee', 'milkshake', 'soda', 'knife'
+    'hamburger', 'cheeseburger', 'fries', 'taco', 'nuggets',
+    'doughnut', 'coffee', 'milkshake', 'soda', 'knife'
 ];
-
-// Create a letter bank of the alphabet to check valid guesses
 const letterBank = [
-  'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
-  'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
+    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+    'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
 ];
-
-// Choose a word from the dictionary (random)
-var randomWordPicker = Math.floor(Math.random() * dictionary.length);
-// Turn the chosen word into an array of lowercase letters
-var activeWord = dictionary[randomWordPicker].toLowerCase().split('');
-console.log('ACTIVE WORD IS: ' + activeWord)
-var correctGuesses = [];
+var activeWord = pickWordFrom(dictionary);
+var activeWordDisplay = [];
+var playerGuess;
 var incorrectGuesses = [];
 
-// Display empty letters in #current-word-area from the length of the chosen word
-var emptyLetters = function() {
-  for (i = 0; i < activeWord.length; i++) {
-    correctGuesses.push('_');
-    document.getElementById('current-word-area').innerHTML = correctGuesses.join(' ');
-  };
-  return correctGuesses;
-}; 
+// Main Game Logic
+initActiveWord(activeWord, activeWordDisplay);
+// Capture user input
+captureNextKeyPress();
+/*
+document.onkeyup = function(event) {
+    // Set a playerInput variable to lower case letter
+    var playerInput = String.fromCharCode(event.keyCode).toLowerCase();
+    // Validate the global `playerGuess` against the letterBank array
+    playerGuess = validateInput(playerInput, letterBank);
+    if ( playerGuess === 1 )
+        insertIncorrectGuess();
+    else
+        insertCorrectGuess(playerGuess);
 
-console.log(activeWord);
-console.log(emptyLetters());
+}; // End input capture
+*/
 
-// Main gameplay loop; Begin accepting player's guesses
-// Start an event listener for keypress events; pass in the events to a function
-document.addEventListener('keypress', function(event) {
-  // instantiate a letter variable and change the keypress to a lowercase string of that letter
-  var letter = String.fromCharCode(event.keyCode).toLowerCase();
+/****************************************************
+ *              Funtion Definitions
+ ***************************************************/
 
-  // Check that the player's guess exists in letterBank
-  if (letterBank.indexOf(letter) > -1) {
-    // If guess is incorrect, insert in incorrectGuesses array
-    if (activeWord.indexOf(letter) === -1) {
-      // As long as letter is not already in the incorrectGuesses, push it in
-      if (incorrectGuesses.indexOf(letter) === -1) {
-        incorrectGuesses.push(letter);
-        // Keep the display of incorrect guesses sorted for good UX
-        incorrectGuesses.sort();
-        document.getElementById("incorrect-guesses").innerHTML = incorrectGuesses.join(' ');
-      }
-      // Else if the letter has already been guessed
-      else {
-        console.log(letter + " has already been guessed");
-      }
-    }
-    // If guess is correct, insert in correctGuesses array
-    else if (activeWord.indexOf(letter) > -1) {
-      // TODO: Step through the activeWord, checking each letter for position
-      // ...
-      // Currently this just splices the first instance of a correct letter into correctGuesses at the word's letter position
-      correctGuesses.splice(activeWord.indexOf(letter), 1, letter);
-      document.getElementById("current-word-area").innerHTML = correctGuesses.join(' ');
-      console.log('correct: ' + correctGuesses);
-      // This currently doesn't handle repeated letters in activeWord properly!
-    }
-  }
-  // Provide some feedback for invalid player guesses
-  else {
-    console.log(letter + " is going in the trash as it's not a letter")
-  }
-  
-  }); // End main
+function insertIncorrectGuess() {
+    console.log(playerGuess);
+}
+function insertCorrectGuess() {
+    console.log(playerGuess);
+}
+
+/**`captureNextKeyPress()`
+ * Waits and processes player guesses from the keyboard.
+ * Returns:
+ *      a letter     
+ * Accepts:
+ *      nothing
+ */
+function captureNextKeyPress() {
+    // Capture user input
+    document.onkeyup = function(event) {
+        // Set a playerInput variable to lower case letter
+        var playerInput = String.fromCharCode(event.keyCode).toLowerCase();
+        // Validate the global `playerGuess` against the letterBank array
+        playerGuess = validateInput(playerInput, letterBank);
+        console.log(playerGuess);
+    }; // End input capture
+}
+
+/* `initActiveWord()` 
+ * Writes the currently active word to guess into the active-content-area element.
+ * Returns an array of underscores for each letter.
+ * Accepts:
+ *     `word` (word to be replaced with underscores)
+ *     `display` (array of underscores for each letter of `word`)
+*/
+function initActiveWord(word, display) {
+    for ( i=0; i < word.length; i++ ) 
+        display.push('_');
+    document.getElementById('active-word-area').innerHTML = display.join(' ');
+    return display;
+}
+
+/**`pickWordFrom()
+ * Picks a word from the passed in array.
+ * Returns:
+ *      A word
+ * Accepts:
+ *      `wordBank` (list of words; array variable)
+ */
+function pickWordFrom(wordBank) {
+    return wordBank[Math.floor(Math.random() * wordBank.length)];
+}
+
+/**`validateInput()`
+ * Checks player input against an array of valid characters.
+ * Returns:
+ *      valid input character OR
+ *      1 for invalid input
+ * Accepts:
+ *      `playerInput` (captured from a keycode event)
+ *      `validList` (array of valid inputs)
+ */
+function validateInput(keyboardInput, validList) {
+    if ( validList.includes(keyboardInput) )
+        return keyboardInput;
+    else
+        return 1;
+}
 
 
+
+
+
+/***********DEBUG MESSAGES******** */
+function debugLog () {
+console.log('active word chosen: ' + activeWord);
+console.log('activeWordDisplay = ' + activeWordDisplay);
+console.log('playerGuess is currently: ' + playerGuess);
+}

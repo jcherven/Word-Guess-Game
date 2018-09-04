@@ -31,13 +31,16 @@
     </div>
 
     <div class="row justify-content-center">
-        <h1 id="current-word-area"></h1>
+        <h1 id="active-word-area">???</h1>
     </div> <!-- End current-word-area row -->
     <hr>
 
-    <div class="row justify-content-center" id="incorrect-guesses">
-        Incorrect Guesses
-    </div> <!-- End incorrect-guesses row -->
+    <div class="row justify-content-center">
+      <div class="col-md-auto">
+        <h3 class="text-center">Missed Letters</h3>
+      </div>
+      <div class="col-md-auto missed-letters"></div>
+    </div><!-- End incorrect-guesses row -->
 
   </div> <!-- End container -->
   <script src="assets/javascript/game.js"></script>
