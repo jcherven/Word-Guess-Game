@@ -8,6 +8,7 @@ const letterBank = [
     'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
     'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
 ];
+const missMax = 9;
 var activeWordString;
 var activeWordArray;
 var activeWordDisplay = [];
@@ -16,6 +17,7 @@ var playerGuessState = 0;
 var incorrectGuesses = [];
 // Current game state. 0 = gamplay loop is active. 1 = win state. 2 = lose state.
 var gameState = 0;
+var missCounter;
 
 // Main Game Logic
 initGameEnvironment();
@@ -50,10 +52,12 @@ function initGameEnvironment() {
     playerGuessState = 0;
     incorrectGuesses = [];
     gameState = 0;
+    missCounter = 9;
     for ( i=0; i < activeWordString.length; i++ ) 
         activeWordDisplay.push('_');
     document.getElementById('active-word-area').innerHTML = activeWordDisplay.join(' ');
     document.getElementById('missed-letters').innerHTML = incorrectGuesses.join(' ');
+    document.getElementById('misses').innerHTML = missMax - incorrectGuesses.length;
 } // End `initGameEnvironment()`
 
 /**`pickWordFrom()`
@@ -113,16 +117,17 @@ function checkPlayerGuess(letter) {
  * Accepts:
  *      a letter
  * Returns:
+ *      0 if missed and player is still alive
  *      1 if player is out of misses
  */
 function insertIncorrectGuess(incorrectletter) {
     playerGuess = incorrectletter;
     incorrectGuesses.push(incorrectletter);
     incorrectGuesses.sort();
-    document.getElementById('misses').innerText = incorrectGuesses.length;
-    if (incorrectGuesses.length < 9 ) {
-        document.getElementById('missed-letters').innerHTML = incorrectGuesses.join(' ');
-        return 0;
+    document.getElementById('misses').innerText = missMax - incorrectGuesses.length;
+    if (incorrectGuesses.length < missMax ) {
+            document.getElementById('missed-letters').innerHTML = incorrectGuesses.join(' ');
+            return 0;
     }
     else {
         document.getElementById('missed-letters').innerHTML = incorrectGuesses.join(' ');
@@ -141,7 +146,7 @@ function insertCorrectGuess(letter) {
     // compare letter to each item of activeWord, replace the same index of activeWordDisplay
     for ( i=0; i < activeWordArray.length; i++ ) {
         if ( activeWordArray[i] === letter ) {
-            activeWordDisplay[i] = letter;
+            activeWordDisplay[i] = letter.toUpperCase();
             document.getElementById('active-word-area').innerHTML = activeWordDisplay.join(' ');
         }
     }

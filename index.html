@@ -2,7 +2,6 @@
   Make the jumbotron a drive thru attendant speaking and giving feedback:
   Welcome to Wordburger. Can I take your order?
   Our drive through speaker is awful. You'll have to spell your order out. Like with letters. So I can get it correct.
-  They don't pay us enough for this level of detail, but I just need to get through my day.
 
   If 'knife' is chosen, the attendant says "whoa buddy what kind of shop do you think this is? order seriously this time."
 
@@ -16,18 +15,27 @@
   <title>Word-Guess-Game (jcherven)</title>
   <!-- pull in bootstrap --> 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <!-- Pull in fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Bowlby+One|Zilla+Slab+Highlight" rel="stylesheet">
 
   <!-- Reset css   <link rel="stylesheet" type="text/css" media="screen" href="assets/css/reset.css">
--->
+  -->
 
   <!-- style.css -->
   <link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css" />
+
 </head>
 
-<body>
+<body class="background">
   <div class="container">
-    <div class="jumbotron">
-      <h1>wordburger</h1>
+    <div class="jumbotron jumbotron-styling"> 
+      <div class="col-md-12" id="wordburger-brand">
+        <h1>WORDBURGER</h1>
+        <div class="col-md-12" id="section-label">
+          <h5>Misses remaining: </h5>
+        </div>
+        <span id="misses"></span>
+      </div>
     </div>
 
     <div class="row justify-content-center">
@@ -37,16 +45,17 @@
 
     <div class="row justify-content-center">
       <div class="col-md-auto">
-        <h3 class="text-center">Missed Letters</h3>
+        <h4 class="text-center" id="section-label">Missed Letters</h4>
       </div>
     </div>
-    <div class="row justify-content-center" id="missed-letters"></div>
+    <div class="row justify-content-center"></div>
     <div class="row justify-content-center">
-      <h5 id="feedback"></h5>
+      <h1 class="font-zilla-slab" id="missed-letters">_</h1>
     </div>
+    <hr>
     <footer class="page-footer fixed-bottom">
       <div class="row">
-        <div class="col bg-secondary" id="misses">0</div>
+        <div class="col bg-secondary" id="misses"></div>
       </div>
    </footer>
   </div> <!-- End container -->

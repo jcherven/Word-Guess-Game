@@ -1,6 +1,32 @@
-/* prototype styling until the game is ready for polish */
+#wordburger-brand {
+    font-family: 'Bowlby One', cursive;
+    color: beige;
+}
 
+#section-label {
+    color: #ffc300;
+    font-family: 'Bowlby One', cursive;
+}
 
+#active-word-area {
+    font-family: 'Bowlby One', cursive;
+    color: beige;
+}
 
+.font-zilla-slab {
+    font-family: 'Zilla Slab Highlight', cursive;
+}
 
+#missed-letters {
+    color: beige;
+}
 
+.jumbotron-styling {
+    display: flex;
+    align-items: center;
+    background-color: #dd1021;
+}
+
+.background {
+    background-color: #70584a;
+}
