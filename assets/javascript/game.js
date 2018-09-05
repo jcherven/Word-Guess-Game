@@ -1,29 +1,38 @@
 // Global Variables
+/*
 const dictionary = [
     'hamburger', 'cheeseburger', 'fries', 'taco', 'nuggets',
     'doughnut', 'coffee', 'milkshake', 'soda', 'knife'
 ];
+*/
+const dictionary = ['bb'];
 const letterBank = [
     'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
     'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
 ];
-var activeWord = pickWordFrom(dictionary);
+var activeWordString;
+var activeWordArray;
 var activeWordDisplay = [];
 var playerGuess;
+var playerGuessState = 0;
 var incorrectGuesses = [];
+// Current game state. 0 = gamplay loop is active. 1 = win state. 2 = lose state.
+var gameState = 0;
+document.getElementById('game-state').innerHTML = gameState;
 
 // Main Game Logic
-initActiveWord(activeWord, activeWordDisplay);
+initGameEnvironment();
 // Capture user input
 document.onkeyup = function(event) {
-    // Set a playerInput variable to lower case letter
     var playerInput = event.key.toLowerCase();
-    // Validate the global `playerGuess` against the letterBank array
-    playerGuess = validateInput(playerInput, letterBank);
-    if ( playerGuess === 1 )
-        insertIncorrectGuess();
+    playerGuessState = validateInput(playerInput, letterBank);
+    if ( playerGuessState === 1 ) {
+        // Invalid input
+        document.getElementById('feedback').innerHTML = "Letters only, please";
+    }
     else
-        insertCorrectGuess(playerGuess);
+        // Valid input
+        gameState = checkPlayerGuess(playerGuess);
 }; // End input capture
 // End main game logic
 
@@ -31,11 +40,73 @@ document.onkeyup = function(event) {
  *              Funtion Definitions
  ***************************************************/
 
-function insertIncorrectGuess() {
-    console.log("Incorrect Guess: " + playerGuess);
+/**`checkPlayerGuess()`
+ * Checks if the passed letter is in the activeWord, passes to insertCorrectGuess or insertIncorrectGuess.
+ * Accepts:
+ *      a letter
+ * Returns:
+ *      1 if in win state
+ *      2 if in lose state
+ */
+function checkPlayerGuess(letter) {
+    if (activeWordString.includes(letter) ) {
+        if ( insertCorrectGuess(letter) === 1 )
+            // Return win state
+            return 1;
+    }
+    else
+        if ( insertIncorrectGuess(letter) === 1 ) 
+            // Return lose state
+            return 2;
+        else
+            return 0;
 }
-function insertCorrectGuess() {
-    console.log('Correct Guess: ' + playerGuess);
+
+/**`insertIncorrectGuess()`
+ * Handles an incorrect guess and keeps track of the number of missed letters. Checks for lose state.
+ * Accepts:
+ *      a letter
+ * Returns:
+ *      1 if player is out of misses
+ */
+function insertIncorrectGuess(incorrectletter) {
+    playerGuess = incorrectletter;
+    incorrectGuesses.push(incorrectletter);
+    incorrectGuesses.sort();
+    document.getElementById('misses').innerText = incorrectGuesses.length;
+    if (incorrectGuesses.length < 9 ) {
+        document.getElementById('missed-letters').innerHTML = incorrectGuesses.join(' ');
+        document.getElementById('alive-dead').innerHTML = "alive";
+        document.getElementById('game-state').innerHTML = gameState;
+        return 0;
+    }
+    else {
+        document.getElementById('missed-letters').innerHTML = incorrectGuesses.join(' ');
+        document.getElementById('alive-dead').innerHTML = "dead";
+        document.getElementById('game-state').innerHTML = gameState;
+        return 1;
+    }
+}
+
+/**`insertCorrectGuesses()`
+ * Handles correct guesses. Checks for win state.
+ *      a letter
+ * Returns:
+ *      1 if the word is complete (win state)
+ */
+function insertCorrectGuess(letter) {
+    playerGuess = letter;
+    // compare letter to each item of activeWord, replace the same index of activeWordDisplay
+    for ( i=0; i < activeWordArray.length; i++ ) {
+        if ( activeWordArray[i] === letter ) {
+            activeWordDisplay[i] = letter;
+            document.getElementById('active-word-area').innerHTML = activeWordDisplay.join(' ');
+        }
+    }
+    if ( activeWordDisplay.includes('_') )
+        return 0;
+    else
+        return 1;
 }
 
 /* `initActiveWord()` 
@@ -45,11 +116,17 @@ function insertCorrectGuess() {
  *     `word` (word to be replaced with underscores)
  *     `display` (array of underscores for each letter of `word`)
 */
-function initActiveWord(word, display) {
-    for ( i=0; i < word.length; i++ ) 
-        display.push('_');
-    document.getElementById('active-word-area').innerHTML = display.join(' ');
-    return display;
+function initGameEnvironment() {
+    activeWordString = pickWordFrom(dictionary);
+    activeWordArray = activeWordString.split('');
+    activeWordDisplay = [];
+    playerGuess = null;
+    playerGuessState = 0;
+    incorrectGuesses = [];
+    gameState = 0;
+    for ( i=0; i < activeWordString.length; i++ ) 
+        activeWordDisplay.push('_');
+    document.getElementById('active-word-area').innerHTML = activeWordDisplay.join(' ');
 }
 
 /**`pickWordFrom()
@@ -73,8 +150,10 @@ function pickWordFrom(wordBank) {
  *      `validList` (array of valid inputs)
  */
 function validateInput(keyboardInput, validList) {
-    if ( validList.includes(keyboardInput) )
-        return keyboardInput;
+    if ( validList.includes(keyboardInput) ) {
+        playerGuess = keyboardInput;
+        return 0;
+    }
     else
         return 1;
 }
@@ -84,8 +163,8 @@ function validateInput(keyboardInput, validList) {
 
 
 /***********DEBUG MESSAGES******** */
-function debugLog () {
-console.log('active word chosen: ' + activeWord);
-console.log('activeWordDisplay = ' + activeWordDisplay);
-console.log('playerGuess is currently: ' + playerGuess);
+function debugLog() {
+    document.getElementById('active-word').innerHTML = 'active word: ' + activeWordString;
+    document.getElementById('correct').innerHTML = 'activeWordDisplay: ' + activeWordDisplay;
+    document.getElementById('player-guess').innerHTML = 'playerGuess: ' + playerGuess;
 }
